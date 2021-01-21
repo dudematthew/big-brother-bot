@@ -1,0 +1,33 @@
+{
+        "language": "English (EN)",
+        "commands": {
+                "help": {
+                        "commandString": "help",
+                        "aliases": [
+                                "pomoc",
+                                "h"
+                        ],
+                        "description": "Wyświetla pomoc dotyczącą dostępnych komend",
+                        "additionalInfo": "",
+                        "useMethod": "*help [nazwa komendy]"
+                },
+                "setChannel": {
+                        "commandString": "setchannel",
+                        "aliases": [
+                                "sc"
+                        ],
+                        "description": "Zmienia zapisane ID kanałów",
+                        "additionalInfo": "Dostępne kanały do ustawienia: ",
+                        "useMethod": "*setchannel <nazwa kanału> <id kanału>"
+                },
+                "channelType": {
+                        "commandString": "channeltype",
+                        "aliases": [
+                                "ct"
+                        ],
+                        "description": "Pokazuje, jak zapisałem dany kanał",
+                        "additionalInfo": "Jeśli wywoła się komendę bez podania id, zostanie użyty kanał na którym wywołano komendę",
+                        "useMethod": "*channeltype [id kanału]"
+                }
+        }
+}

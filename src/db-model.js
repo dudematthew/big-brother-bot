@@ -5,10 +5,9 @@ import { Config as JDBConfig } from 'node-json-db/dist/lib/JsonDBConfig.js';
 // https://discord.js.org
 import Discord from 'discord.js';
 
-import Common from './common.js';
 import config from './config.js';
 
-export default class dbModel {
+export default class DBModel {
   /**
    * @type {String}
    */
@@ -27,6 +26,34 @@ export default class dbModel {
     this.#db = new JsonDB(
       new JDBConfig(dbName, saveOnPush, humanReadable, '/')
     );
+  }
+
+  /**
+   * Gets string by current locale
+   * @param {String} id Name of string member to
+   * get in snake case
+   * @param {Boolean} lettercase Case of first
+   * letter in returned string:
+   * - true for Uppercase
+   * - false for Lowercase
+   * - null for original (default)
+   */
+  _(id, lettercase = null) {
+    // Snake case to camel case
+    id = id.replace(/([-_][a-z])/g, (group) =>
+      group.toUpperCase().replace('-', '').replace('_', '')
+    );
+
+    switch (lettercase) {
+      case true:
+        id = id.charAt(0).toUpperCase() + id.slice(1);
+        break;
+      case false:
+        id = id.charAt(0).toLowerCase() + id.slice(1);
+        break;
+    }
+
+    return config.locales[this.locale].strings[id] ?? '?';
   }
 
   /**
@@ -70,9 +97,49 @@ export default class dbModel {
 
   /**
    * Set command prefix for current guild
+   * @param {String} prefix
    */
   set prefix(prefix) {
     this.set('config/prefix', prefix);
+  }
+
+  /**
+   * Set used language for current guild
+   */
+  set locale(lang) {
+    this.set('config/locale', lang);
+  }
+
+  /**
+   * Get used language for current guild
+   */
+  get locale() {
+    let locale = this.get('config/lang') ?? config.baseLocale;
+    if (config.locales[locale]) {
+      return locale;
+    } else {
+      console.warn(
+        `Locale not found: ${locale}, defaulting to ${config.baseLocale}`
+      );
+      this.locale = config.baseLocale;
+      return config.baseLocale;
+    }
+  }
+
+  getLocaleString() {
+    return config.locales[this.locale].language;
+  }
+
+  set announcementsChannelId(announcementsChannelId) {
+    this.db.push('config/channels/announcements', announcementsChannelId);
+  }
+
+  get announcementsChannelId() {
+    try {
+      return this.db.getData('config/channels/announcement');
+    } catch (error) {
+      return config.channelIds.announcements;
+    }
   }
 
   //   get announcementsChannelId() {

@@ -1,7 +1,9 @@
 {
-        "basePrefix": "*",
-        "images": {
-                "bot": "https://i.imgur.com/YcPlZw4.png"
-        },
-        "locales": {}
-} 
+  "basePrefix": "*",
+  "baseLocale": "en",
+  "themeColorHex": "#76C2AF",
+  "images": {
+    "bot": "https://i.imgur.com/YcPlZw4.png"
+  },
+  "locales": {}
+}

@@ -4,16 +4,14 @@ import Discord from 'discord.js';
 // https://www.npmjs.com/package/jsonfile
 import Jsonfile from 'jsonfile';
 
-// https://www.npmjs.com/package/cleverbot-free
-import cleverbot from 'cleverbot-free';
-
-import Common from './src/common.js';
-// import Commands from './src/commands.js';
-import DbModel from './src/dbModel.js';
+import Commands from './src/commands.js';
+import DBModel from './src/db-model.js';
 import config from './src/config.js';
 
+const isProduction = process.env.BOT_TOKEN == true;
 const client = new Discord.Client();
-const db = new DbModel('./database/database.json', true, false);
+const db = new DBModel('./database/database.json', true, false);
+const commands = new Commands(client, db);
 
 // Initial setup info ---------------------------
 client.on('ready', () => {
@@ -28,8 +26,9 @@ client.on('ready', () => {
     const guild = client.guilds.cache.get(guildId);
     db.setGuildId(guildId);
 
-    console.log('Guild found: ' + guild.name + ' ----------------------');
-    console.log(`Using prefix: ${db.prefix}`);
+    console.log('Guild found: ' + guild.name);
+    console.log(`| Using prefix: ${db.prefix}`);
+    console.log(`| Using language: ${db.getLocaleString()}`);
 
     // // Set channels by id's from config
     // channels = {
@@ -54,15 +53,14 @@ client.on('message', (message) => {
   // Prevent reacting to own messages
   if (message.author.bot) return;
 
-  const isAdmin = message.member.hasPermission('ADMINISTRATOR') ? true : false;
   const messageWords = message.content.split(' ');
   const senderId = message.member.user.id;
+  const args = message.content.slice(db.prefix.length).trim().split(' ');
 
   if (message.content.startsWith(db.prefix)) {
-    
-    // Command
-  } else {
-    // Not a command
+    commands.message = message;
+    commands.invokeCommand();
+    return;
   }
 });
 
@@ -166,6 +164,13 @@ client.on('message', (message) => {
 client.on('error', (error) => {
   console.error('There was an error:', error);
 });
+
+// Node error handling
+if (isProduction)
+  process.on('uncaughtException', function (err) {
+    console.error('Caught exception: ', err);
+    console.error('Error stack: ', err.stack);
+  });
 
 /** ---------------------------------------------
  * Token should be contained in './token.json'

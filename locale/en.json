@@ -1,33 +1,43 @@
 {
-    "language": "Polski (PL)",
-    "commands": {
-        "help": {
-                "commandString": "help",
-                "aliases": [
-                        "pomoc",
-                        "h"
-                ],
-                "description": "Wyświetla pomoc dotyczącą dostępnych komend",
-                "additionalInfo": "",
-                "useMethod": "*help [nazwa komendy]"
-        },
-        "setChannel": {
-                "commandString": "setchannel",
-                "aliases": [
-                        "sc"
-                ],
-                "description": "Zmienia zapisane ID kanałów",
-                "additionalInfo": "Dostępne kanały do ustawienia: ",
-                "useMethod": "*setchannel <nazwa kanału> <id kanału>"
-        },
-        "channelType": {
-                "commandString": "channeltype",
-                "aliases": [
-                        "ct"
-                ],
-                "description": "Pokazuje, jak zapisałem dany kanał",
-                "additionalInfo": "Jeśli wywoła się komendę bez podania id, zostanie użyty kanał na którym wywołano komendę",
-                "useMethod": "*channeltype [id kanału]"
-        }
+  "language": "English (EN)",
+  "commands": {
+    "help": {
+      "id": "help",
+      "commandString": "help",
+      "aliases": ["pomoc", "h"],
+      "description": "Shows all commands and information about them",
+      "additionalInfo": "",
+      "useMethod": "help [command name]"
+    },
+    "setChannel": {
+      "id": "setchannel",
+      "commandString": "setchannel",
+      "aliases": ["sc"],
+      "description": "Changes saved channel id's",
+      "additionalInfo": "Available channels to set: ",
+      "useMethod": "setchannel <channel name> <channel id>"
+    },
+    "channelType": {
+      "id": "channeltype",
+      "commandString": "channeltype",
+      "aliases": ["ct"],
+      "description": "Shows how given channel is saved as",
+      "additionalInfo": "If command is induced without giving id, current channel id is going to be used",
+      "useMethod": "channeltype [channel id]"
+    },
+    "setPrefix": {
+      "id": "setprefix",
+      "commandString": "setprefix",
+      "aliases": ["sp"],
+      "description": "Changes Big Brother's prefix in this Discord server",
+      "additionalInfo": "Prefix cannot contain spaces",
+      "useMethod": "setprefix <prefix>"
     }
+  },
+  "strings": {
+    "name": "Big Brother",
+    "help": "Help",
+    "helpAdditionalInfo": "You can also use ##1help <command name> to get more info",
+    "useMethod": "Use method"
+  }
 }

@@ -9,7 +9,13 @@ import Common from './common.js';
 import config from './config.js';
 
 export default class dbModel {
+  /**
+   * @type {String}
+   */
   #guildId;
+  /**
+   * @type {JsonDB}
+   */
   #db;
 
   /**
@@ -23,8 +29,6 @@ export default class dbModel {
     );
   }
 
-  #push() {}
-
   /**
    * Set currently used guild id
    * @param {String} guildId
@@ -34,23 +38,41 @@ export default class dbModel {
   }
 
   /**
+   * Get data from database based on current
+   * Guild Id
+   * @param {String} path
+   */
+  get(path) {
+    try {
+      return this.#db.getData(`${this.#guildId}/${path}`);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  /**
+   * Set data to database based on current
+   * Guild Id
+   * @param {String} path
+   */
+  set(path, data) {
+    this.#db.push(`${this.#guildId}/${path}`, data);
+  }
+
+  /**
    * Get command prefix for current guild
    * defaults to prefix from config
    * @returns {String}
    */
   get prefix() {
-    try {
-      return this.db.getData(`${this.#guildId}/config/prefix`);
-    } catch (error) {
-      return config.basePrefix;
-    }
+    return this.get('/config/prefix') ?? config.basePrefix;
   }
 
   /**
    * Set command prefix for current guild
    */
   set prefix(prefix) {
-    this.#db.push(`${this.#guildId}/config/prefix`, prefix);
+    this.set('config/prefix', prefix);
   }
 
   //   get announcementsChannelId() {

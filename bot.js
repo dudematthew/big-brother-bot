@@ -51,15 +51,15 @@ client.on('ready', () => {
 });
 
 client.on('message', (message) => {
+  // Prevent reacting to own messages
   if (message.author.bot) return;
 
   const isAdmin = message.member.hasPermission('ADMINISTRATOR') ? true : false;
   const messageWords = message.content.split(' ');
   const senderId = message.member.user.id;
 
-  if (message.content.startsWith(prefix)) {
-    const args = message.content.slice(prefix.length).trim().split(' ');
-    const command = args.shift().toLowerCase();
+  if (message.content.startsWith(db.prefix)) {
+    
     // Command
   } else {
     // Not a command

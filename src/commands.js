@@ -5,36 +5,58 @@ import Discord from 'discord.js';
 // Local
 import Common from './common.js';
 import dbModel from '../dbModel.js';
+import dbModel from './dbModel.js';
 
 /**
  * @param {Discord.Client} Client
  * @param {dbModel} db
  */
 export default class Commands {
+    /**
+     * @type {dbModel}
+     */
+    #db;
+    /**
+     * @type {Discord.Client}
+     */
+    #client;
+    /**
+     * @type {Array}
+     */
+    #args;
+    /**
+     * @type {String}
+     */
+    #command;
+
     constructor(client, db) {
-        this.db = db;
-        this.client = client;
+        this.#db = db;
+        this.#client = client;
     }
 
     /**
      * @param {Discord.Message} val
      */
     set message(val) {
-        this.msg = val;
+        this.#msg = val;
+        this.#args = message.content.slice(prefix.length).trim().split(' ');
+        this.#command = args.shift().toLowerCase();
+        this.#db.setGuildId(msg.guild.id);
     }
 
     /**
      * @return {Discord.Message} 
      */
     get message() {
-        return this.msg;
+        return this.#msg;
     }
 
-    /**
-     * 
-     * @param {*} args 
-     */
-    help(args = []) {
+    get args() {
+        const args = message.content.slice(prefix.length).trim().split(' ');
+    const command = args.shift().toLowerCase();
+    }
+
+    help() {
         // There are arguments
         if (args[0]) {
 
@@ -79,7 +101,7 @@ export default class Commands {
                 helpEmbed.addField("Informacje", invokedCommand.additionalInfo, false);
             helpEmbed.addField("Sposób użycia", invokedCommand.useMethod, false);
 
-            this.msg.channel.send(helpEmbed);
+            this.#msg.channel.send(helpEmbed);
 
         } else {
             // Create Embed
@@ -116,29 +138,29 @@ export default class Commands {
                     false);
             }
 
-            this.msg.channel.send(helpEmbed);
+            this.#msg.channel.send(helpEmbed);
         }
     }
 
     setChannel (args = []) {
         if (args[0] && args[1] && !args[2]) {
             if (args[0] == "test" || args[0] == "announcements" || args[0] == "general") {
-                let channel = this.msg.guild.channels.cache.get(args[1]);
+                let channel = this.#msg.guild.channels.cache.get(args[1]);
                 if (channel !== undefined) {
                     switch (args[0]) {
                         case "announcements":
-                            this.db.announcementChannelId = args[1];
-                            this.msg.channel.send("Ustawiono kanał `" + channel.name + "` na kanał ogłoszeniowy");
+                            this.#db.announcementChannelId = args[1];
+                            this.#msg.channel.send("Ustawiono kanał `" + channel.name + "` na kanał ogłoszeniowy");
                             break;
 
                         case "general":
-                            this.db.generalChannelId = args[1];
-                            this.msg.channel.send("Ustawiono kanał `" + channel.name + "` na kanał ogólny");
+                            this.#db.generalChannelId = args[1];
+                            this.#msg.channel.send("Ustawiono kanał `" + channel.name + "` na kanał ogólny");
                             break;
 
                         case "test":
-                            this.db.testChannelId = args[1];
-                            this.msg.channel.send("Ustawiono kanał `" + channel.name + "` na kanał testowy");
+                            this.#db.testChannelId = args[1];
+                            this.#msg.channel.send("Ustawiono kanał `" + channel.name + "` na kanał testowy");
                             break;
                     
                         default:
@@ -146,7 +168,7 @@ export default class Commands {
                     }
                 } 
                 else
-                    this.msg.channel.send("Nie ma takiego kanału...");
+                    this.#msg.channel.send("Nie ma takiego kanału...");
 
             } else {
                 let helpEmbed = new Discord.MessageEmbed()
@@ -156,7 +178,7 @@ export default class Commands {
                     Config.commands.setChannel.additionalInfo, 
                     false);
 
-                this.msg.channel.send(helpEmbed);
+                this.#msg.channel.send(helpEmbed);
             }
         }
         else {
@@ -167,7 +189,7 @@ export default class Commands {
                     Config.commands.setChannel.useMethod, 
                     false);
 
-            this.msg.channel.send(helpEmbed);
+            this.#msg.channel.send(helpEmbed);
         }
     }
 
@@ -184,20 +206,20 @@ export default class Commands {
             }
 
             if (foundChannel) {
-                this.msg.channel.send("Ten kanał jest zapisany w mojej bazie jako kanał typu `" + foundChannel + "`");
+                this.#msg.channel.send("Ten kanał jest zapisany w mojej bazie jako kanał typu `" + foundChannel + "`");
             } else {
-                this.msg.channel.send("Ten kanał nie istnieje w mojej bazie...");
+                this.#msg.channel.send("Ten kanał nie istnieje w mojej bazie...");
             }
         };
 
         if (args[0] && !args[1]) {
-            if (this.msg.guild.channels.cache.get(args[0]) !== undefined) {
+            if (this.#msg.guild.channels.cache.get(args[0]) !== undefined) {
                 testchannel(args[0]);
             } else
-                this.msg.channel.send("Eee... nie ma takiego kanału...");
+                this.#msg.channel.send("Eee... nie ma takiego kanału...");
         }
         else if (!args[0]) {
-            testchannel(this.msg.channel.id);
+            testchannel(this.#msg.channel.id);
         }
         else {
             let helpEmbed = new Discord.MessageEmbed()
@@ -207,7 +229,7 @@ export default class Commands {
                 Config.commands.channelType.useMethod, 
                 false);
 
-        this.msg.channel.send(helpEmbed);
+        this.#msg.channel.send(helpEmbed);
         }
     }
 }

@@ -33,7 +33,7 @@
   "strings": {
     "name": "Wielki Brat",
     "help": "Pomoc",
-    "helpAdditionalInfo": "Możesz również użyć ##1help <nazwa komendy> aby dowiedzieć się więcej",
+    "helpAdditionalInfo": "Możesz również użyć ##0help <nazwa komendy> aby dowiedzieć się więcej",
     "useMethod": "Sposób użycia"
   }
 }

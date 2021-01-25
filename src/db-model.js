@@ -32,28 +32,42 @@ export default class DBModel {
    * Gets string by current locale
    * @param {String} id Name of string member to
    * get in snake case
+   * @param {Array} replace Strings to replace
+   * arguments with
    * @param {Boolean} lettercase Case of first
    * letter in returned string:
    * - true for Uppercase
    * - false for Lowercase
    * - null for original (default)
    */
-  _(id, lettercase = null) {
+  _(id, replace = [], lettercase = null) {
     // Snake case to camel case
     id = id.replace(/([-_][a-z])/g, (group) =>
       group.toUpperCase().replace('-', '').replace('_', '')
     );
 
-    switch (lettercase) {
-      case true:
-        id = id.charAt(0).toUpperCase() + id.slice(1);
-        break;
-      case false:
-        id = id.charAt(0).toLowerCase() + id.slice(1);
-        break;
-    }
+    let string = config.locales[this.locale].strings[id] ?? '?';
 
-    return config.locales[this.locale].strings[id] ?? '?';
+    if (string != '?') {
+      // Replace "##i" with given strings
+      if (replace.length !== 0) {
+        for (let i = 0; i < replace.length; i++) {
+          const replaceString = replace[i];
+
+          string = string.replace(`##${i}`, replaceString);
+        }
+      }
+      // Transform first letter case
+      switch (lettercase) {
+        case true:
+          id = id.charAt(0).toUpperCase() + id.slice(1);
+          break;
+        case false:
+          id = id.charAt(0).toLowerCase() + id.slice(1);
+          break;
+      }
+    }
+    return string;
   }
 
   /**

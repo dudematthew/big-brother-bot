@@ -111,7 +111,7 @@ export default class Commands {
     const helpEmbed = new Discord.MessageEmbed()
       .setColor(config.themeColorHex)
       .setAuthor(this.#db._('name'), config.images.bot)
-      .setFooter(this.#db._('help_additional_info').replace('##1', this.#db.prefix));
+      .setFooter(this.#db._('help_additional_info', [this.#db.prefix]));
 
     // There are arguments
     if (this.#args[0]) {

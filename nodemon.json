@@ -1,4 +1,4 @@
 {
-    "verbose": true,
-    "ignore": ["*.json"]
+  "verbose": true,
+  "ignore": ["database/*.json"]
 }

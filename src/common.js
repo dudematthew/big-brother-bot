@@ -1,13 +1,16 @@
 // https://www.npmjs.com/package/fs
 import Filesystem from 'fs';
 
+// https://discord.js.org
+import Discord from 'discord.js';
+
 import config from './config.js';
 
 /**
  * Returns random value from given array
  * @param {Array} array
  */
-export function RandomValue(array) {
+export function randomValue(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 /**
@@ -16,7 +19,7 @@ export function RandomValue(array) {
  * @param {Number} time
  * @param {function} callback
  */
-export function LoopAction(time, callback) {
+export function loopAction(time, callback) {
   setTimeout(() => {
     callback();
     this.LoopAction(time, callback);
@@ -28,7 +31,7 @@ export function LoopAction(time, callback) {
  * @param {Array} arr
  * @param {Number} size
  */
-export function ResizeArray(arr, size) {
+export function resizeArray(arr, size) {
   if (size < 2) return arr;
   while (arr.length > size) arr.shift();
   return arr;
@@ -37,7 +40,7 @@ export function ResizeArray(arr, size) {
  * lists all files in given location
  * @returns {Array.<String>}
  */
-export function GetAllFileNamesFromFolder(dir) {
+export function getAllFileNamesFromFolder(dir) {
   var results = [];
   Filesystem.readdirSync(dir).forEach(function (fileName) {
     let file = dir + '/' + fileName;
@@ -47,4 +50,16 @@ export function GetAllFileNamesFromFolder(dir) {
     } else results.push(fileName);
   });
   return results;
+}
+
+/**
+ * Creates and returns simple title + subtitle
+ * Discord Embed
+ * @returns {Discord.MessageEmbed}
+ */
+export function embedMessage(title, subtitle) {
+  // Create Embed
+  return new Discord.MessageEmbed()
+    .setColor(config.themeColorHex)
+    .addField(title, subtitle, false);
 }

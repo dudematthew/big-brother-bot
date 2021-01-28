@@ -1,8 +1,9 @@
 // https://discord.js.org
-import Discord from 'discord.js';
+import Discord, { MessageEmbed } from 'discord.js';
 
 import DBModel from './db-model.js';
 import config from './config.js';
+import { embedMessage } from './common.js';
 
 /**
  * @param {Discord.Client} Client
@@ -40,25 +41,26 @@ export default class Commands {
   }
 
   /**
-   * Check if given command exist and returns it's config
+   * Check if given command exist and returns it's id
    * @param {String} commandString Config command name string
    * @param {String} command Invoked command
+   * @returns {String} false if not found
    */
   #checkCommand() {
     for (const property in config.locales[this.#db.locale].commands) {
       let configCommand = config.locales[this.#db.locale].commands[property];
+
       if (
         this.#command == configCommand.commandString ||
         configCommand.aliases.includes(this.#command)
-      ) {
-        return configCommand.id;
-      }
-      return false;
+      )
+        return configCommand.id ?? false;
     }
+    return false;
   }
 
   /**
-   *
+   * Process a command from current message
    */
   invokeCommand() {
     let commandId = this.#checkCommand();
@@ -69,6 +71,14 @@ export default class Commands {
         break;
       case 'help':
         this.help();
+        break;
+      default:
+        this.#msg.channel.send(
+          embedMessage(
+            this.#db._('no_such_command'),
+            this.#db._('use_help_command', this.#db.prefix)
+          )
+        );
         break;
     }
   }
@@ -129,7 +139,7 @@ export default class Commands {
       }
 
       helpEmbed.setTitle(
-        `Pomoc dla komendy \`${invokedCommand.commandString}\``
+        this.#db._('help_for_command', invokedCommand.commandString)
       );
 
       // Command doesn't exist
@@ -193,9 +203,9 @@ export default class Commands {
   }
 
   setPrefix() {
-    let _ = this.#db._;
     if (this.#args[0] && !this.#args[1]) {
     } else {
+      console.log('??');
       let helpEmbed = new Discord.MessageEmbed()
         .setColor(config.themeColorHex)
         .addField(
@@ -208,6 +218,8 @@ export default class Commands {
       this.#msg.channel.send(helpEmbed);
     }
   }
+
+  setLang() {}
 
   setChannel() {
     if (this.#args[0] && this.#args[1] && !this.#args[2]) {

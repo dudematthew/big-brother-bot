@@ -1,4 +1,4 @@
-import { GetAllFileNamesFromFolder } from './common.js';
+import { getAllFileNamesFromFolder } from './common.js';
 
 // Require
 import { createRequire } from 'module';
@@ -8,7 +8,7 @@ let parentConfig = require('../config.json');
 
 const mainConfig = parentConfig;
 
-const localeConfigsFileNames = GetAllFileNamesFromFolder(
+const localeConfigsFileNames = getAllFileNamesFromFolder(
   `${process.cwd()}/locale/`
 );
 

@@ -42,5 +42,13 @@
     "noSuchCommand": "There is no such command",
     "useHelpCommand": "Use `##0help [command name]` to get help",
     "helpForCommand": "Help for command `##0`"
-  }
+  },
+  "welcomeStrings": [
+    "Jesteśmy dumni, że możemy przyjąć Cię do naszych szeregów.",
+    "Będziesz się u nas czuł, jak przy domowym ogniu.",
+    "Rozsiądź się wygodnie i oznacz ludzi, z którymi chcesz grać.",
+    "Witamy w kolonii 👊",
+    "Witaj Panie, pustynia czeka na ciebie.",
+    "No, do roboty, nie ma co mitrężyć!"
+  ]
 }

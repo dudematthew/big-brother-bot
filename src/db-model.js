@@ -74,7 +74,7 @@ export default class DBModel {
    * Set currently used guild id
    * @param {String} guildId
    */
-  setGuildId(guildId) {
+  setCurrentGuildId(guildId) {
     this.#guildId = guildId;
   }
 
@@ -106,7 +106,7 @@ export default class DBModel {
    * @returns {String}
    */
   get prefix() {
-    return this.get('/config/prefix') ?? config.basePrefix;
+    return this.get('config/prefix') ?? config.basePrefix;
   }
 
   /**
@@ -144,16 +144,24 @@ export default class DBModel {
     return config.locales[this.locale].language;
   }
 
-  set announcementsChannelId(announcementsChannelId) {
-    this.db.push('config/channels/announcements', announcementsChannelId);
+  // set announcementsChannelId(announcementsChannelId) {
+  //   this.db.push('config/channels/announcements', announcementsChannelId);
+  // }
+
+  // get announcementsChannelId() {
+  //   try {
+  //     return this.db.getData('config/channels/announcement');
+  //   } catch (error) {
+  //     return config.channelIds.announcements;
+  //   }
+  // }
+
+  set welcomeChannelId(welcomeChannelId) {
+    this.set('config/channels/welcome', welcomeChannelId);
   }
 
-  get announcementsChannelId() {
-    try {
-      return this.db.getData('config/channels/announcement');
-    } catch (error) {
-      return config.channelIds.announcements;
-    }
+  get welcomeChannelId() {
+    return this.get('config/channels/welcome') ?? null;
   }
 
   //   get announcementsChannelId() {

@@ -1,17 +1,22 @@
 // https://discord.js.org
 import Discord from 'discord.js';
 
+// https://www.npmjs.com/package/read-file
+import readFile from 'read-file';
+
 // https://www.npmjs.com/package/jsonfile
 import Jsonfile from 'jsonfile';
 
 import Commands from './src/commands.js';
 import DBModel from './src/db-model.js';
 import config from './src/config.js';
+import Behaviour from './src/behaviour.js';
 
 const isProduction = process.env.BOT_TOKEN == true;
 const client = new Discord.Client();
 const db = new DBModel('./database/database.json', true, false);
 const commands = new Commands(client, db);
+const behaviour = new Behaviour(client, db);
 
 // Initial setup info ---------------------------
 client.on('ready', () => {
@@ -24,7 +29,7 @@ client.on('ready', () => {
 
   Guilds.forEach((guildId) => {
     const guild = client.guilds.cache.get(guildId);
-    db.setGuildId(guildId);
+    db.setCurrentGuildId(guildId);
 
     console.log('Guild found: ' + guild.name);
     console.log(`| Using prefix: ${db.prefix}`);
@@ -173,12 +178,12 @@ if (isProduction)
   });
 
 /** ---------------------------------------------
- * Token should be contained in './token.json'
- * file as normal string, if there is no such
+ * Token should be contained in './private.json'
+ * file as "token" property, if there is no such
  * file app defaults to heroku global BOT_TOKEN
  * global variable
  --------------------------------------------- */
-Jsonfile.readFile('./token.json', function (err, obj) {
+Jsonfile.readFile('./private.json', function (err, obj) {
   if (err) client.login(process.env.BOT_TOKEN);
-  else client.login(obj);
+  else client.login(obj.TOKEN);
 });

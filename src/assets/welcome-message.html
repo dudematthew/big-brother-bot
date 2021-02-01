@@ -1,0 +1,44 @@
+<!-- Include external CSS, JavaScript or Fonts! -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+
+<style>
+    .container {
+        width: 1024px;
+        height: 500px;
+        background-color: #76C2AF;
+    }
+
+    .tweet-text {
+        font-weight: bolder;
+        font-size: 44px;
+        font-family: 'Roboto', sans-serif;
+        padding: 4px;
+    }
+
+    .tweet-text h2 {
+        font-size: 34px;
+    }
+
+    .navbar {
+        background-color: #76C2AF;
+    }
+</style>
+
+<div class="text-center container">
+    <div class="mt-2 p-4">
+        <img src="${imageUrl}" class="rounded-circle shadow mt-4"
+            width="180px">
+    </div>
+    <h3 class="mb-4 text-muted">
+        ${userTag}
+    </h3>
+    <span class="tweet-text mb-4">
+        Witaj na Bractwie Kontrolera 🎮, ${user}.
+        <br>
+        <span class="d-flex justify-content-center">
+            <h2 class="mr-3 ml-3">${textContent}</h2>
+        </span>
+    </span>
+</div>

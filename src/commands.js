@@ -3,7 +3,7 @@ import Discord, { MessageEmbed } from 'discord.js';
 
 import DBModel from './db-model.js';
 import config from './config.js';
-import { embedMessage } from './common.js';
+import { getBasicEmbed } from './common.js';
 
 /**
  * @param {Discord.Client} Client
@@ -69,12 +69,15 @@ export default class Commands {
       case 'setprefix':
         this.setPrefix();
         break;
+      case 'setchannel':
+        this.setChannel();
+        break;
       case 'help':
         this.help();
         break;
       default:
         this.#msg.channel.send(
-          embedMessage(
+          getBasicEmbed(
             this.#db._('no_such_command'),
             this.#db._('use_help_command', this.#db.prefix)
           )
@@ -96,13 +99,13 @@ export default class Commands {
 
     this.#command = this.#args.shift().toLowerCase();
 
-    this.#args.shift();
-
-    this.#db.setGuildId(message.guild.id);
+    this.#db.setCurrentGuildId(message.guild.id);
 
     this.#isAdmin = message.member.hasPermission('ADMINISTRATOR')
       ? true
       : false;
+
+    console.log(this.#args);
   }
 
   /**
@@ -204,26 +207,33 @@ export default class Commands {
 
   setPrefix() {
     if (this.#args[0] && !this.#args[1]) {
+      if (this.#args[0].length > 3) {
+        this.#msg.channel.send(
+          getBasicEmbed(
+            'Za długi prefix',
+            'Prefix nie może być dłuższy niż trzy znaki'
+          )
+        );
+        return;
+      } else {
+        this.#db;
+      }
     } else {
-      console.log('??');
-      let helpEmbed = new Discord.MessageEmbed()
-        .setColor(config.themeColorHex)
-        .addField(
+      this.#msg.channel.send(
+        getBasicEmbed(
           'Prefix nie może zawierać spacji',
           this.#db.prefix +
-            config.locales[this.#db.locale].commands.setPrefix.useMethod,
-          false
-        );
-
-      this.#msg.channel.send(helpEmbed);
+            config.locales[this.#db.locale].commands.setPrefix.useMethod
+        )
+      );
     }
   }
 
-  setLang() {}
-
   setChannel() {
+    console.log(this.#args);
     if (this.#args[0] && this.#args[1] && !this.#args[2]) {
       if (
+        this.#args[0] == 'welcome' ||
         this.#args[0] == 'test' ||
         this.#args[0] == 'announcements' ||
         this.#args[0] == 'general'
@@ -231,6 +241,12 @@ export default class Commands {
         let channel = this.#msg.guild.channels.cache.get(this.#args[1]);
         if (channel !== undefined) {
           switch (this.#args[0]) {
+            case 'welcome':
+              this.#db.welcomeChannelId = this.#args[1];
+              this.#msg.channel.send(
+                'Ustawiono kanał `' + channel.name + '` na kanał powitalny'
+              );
+              break;
             case 'announcements':
               this.#db.announcementChannelId = this.#args[1];
               this.#msg.channel.send(
@@ -257,27 +273,21 @@ export default class Commands {
           }
         } else this.#msg.channel.send('Nie ma takiego kanału...');
       } else {
-        let helpEmbed = new Discord.MessageEmbed()
-          .setColor('#ffffff')
-          .addField(
-            'Emmm... takiego kanału się nie ustawia...',
-            config.locales[this.#db.locale].commands.setChannel.additionalInfo,
-            false
-          );
-
-        this.#msg.channel.send(helpEmbed);
+        this.#msg.channel.send(
+          getBasicEmbed(
+            'Nie istnieje taki typ kanału',
+            config.locales[this.#db.locale].commands.setChannel.additionalInfo
+          )
+        );
       }
     } else {
-      let helpEmbed = new Discord.MessageEmbed()
-        .setColor('#ffffff')
-        .addField(
+      this.#msg.channel.send(
+        getBasicEmbed(
           'Poprawne użycie komendy:',
           this.#db.prefix +
-            config.locales[this.#db.locale].commands.setChannel.useMethod,
-          false
-        );
-
-      this.#msg.channel.send(helpEmbed);
+            config.locales[this.#db.locale].commands.setChannel.useMethod
+        )
+      );
     }
   }
 

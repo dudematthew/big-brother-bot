@@ -57,7 +57,7 @@ export function getAllFileNamesFromFolder(dir) {
  * Discord Embed
  * @returns {Discord.MessageEmbed}
  */
-export function embedMessage(title, subtitle) {
+export function getBasicEmbed(title, subtitle) {
   // Create Embed
   return new Discord.MessageEmbed()
     .setColor(config.themeColorHex)

@@ -64,6 +64,7 @@ export default class Behaviour {
 
           // Replace variables in HTML code
           htmlCode = htmlCode.replace('${imageUrl}', member.user.avatarURL());
+          htmlCode = htmlCode.replace('${logoUrl}', config.images.bot);
           htmlCode = htmlCode.replace('${userTag}', member.user.tag);
           htmlCode = htmlCode.replace('${user}', member.user.username);
           htmlCode = htmlCode.replace(
@@ -80,7 +81,7 @@ export default class Behaviour {
           /** ---------------------------------------------
            * API keys should be contained in './private.json'
            * file as "HTCI_API_ID" & "HTCI_API_KEY" properties,
-           * if there are no such app defaults to heroku global 
+           * if there are no such, app defaults to heroku global 
            * HTCI_API_KEY & HTCI_API_ID global variables
           --------------------------------------------- */
           Jsonfile.readFile('./private.json', function (err, obj) {
@@ -101,14 +102,9 @@ export default class Behaviour {
               .auth(API_ID, API_KEY)
               .on('data', function (data) {
                 let imgLink = JSON.parse(data).url;
-                const welcomeEmbed = new Discord.MessageEmbed()
-                  .setColor(config.themeColorHex)
-                  .setTitle(`${member.guild.name} liczy nowego brata!`)
-                  .setDescription(`Powitajmy **<@${member.user.id}>**`)
-                  .setImage(imgLink)
-                  .setThumbnail(config.images.bot);
-
-                welcomeChannel.send(welcomeEmbed);
+                welcomeChannel.send({
+                  files: [`${imgLink}.png`],
+                });
               });
           });
         }

@@ -8,6 +8,7 @@
         width: 1024px;
         height: 500px;
         background-color: #76C2AF;
+        position: relative;
     }
 
     .tweet-text {
@@ -24,12 +25,22 @@
     .navbar {
         background-color: #76C2AF;
     }
+
+    .top-right {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+    }
+
+    .vertical-center {
+        display: flex;
+        align-items: center;
+    }
 </style>
 
 <div class="text-center container">
-    <div class="mt-2 p-4">
-        <img src="${imageUrl}" class="rounded-circle shadow mt-4"
-            width="180px">
+    <div class="p-4">
+        <img src="${imageUrl}" class="rounded-circle shadow mt-4 border border-light" width="180px">
     </div>
     <h3 class="mb-4 text-muted">
         ${userTag}
@@ -41,4 +52,8 @@
             <h2 class="mr-3 ml-3">${textContent}</h2>
         </span>
     </span>
+    <div class="d-flex justify-content-between top-right">
+        <span class="vertical-center mr-2 font-weight-lighter">Bractwo Kontrolera</span>
+        <img src="${logoUrl}" class="rounded-circle shadow" width="50px">
+    </div>
 </div>

@@ -4,6 +4,10 @@
 
 
 <style>
+    * {
+        font-family: 'Segoe UI', sans-serif;
+    }
+
     .container {
         width: 1024px;
         height: 500px;
@@ -13,9 +17,6 @@
 
     .tweet-text {
         font-weight: bolder;
-        font-size: 44px;
-        font-family: 'Roboto', sans-serif;
-        padding: 4px;
     }
 
     .tweet-text h2 {
@@ -28,8 +29,8 @@
 
     .top-right {
         position: absolute;
-        top: 8px;
-        right: 8px;
+        top: 16px;
+        right: 16px;
     }
 
     .vertical-center {
@@ -39,14 +40,14 @@
 </style>
 
 <div class="text-center container">
-    <div class="p-4">
-        <img src="${imageUrl}" class="rounded-circle shadow mt-4 border border-light" width="180px">
+    <div class="p-3">
+        <img src="${imageUrl}" class="rounded-circle shadow mt-4" width="180px">
     </div>
     <h3 class="mb-4 text-muted">
         ${userTag}
     </h3>
-    <span class="tweet-text mb-4">
-        Witaj na Bractwie Kontrolera 🎮, ${user}.
+    <span class="tweet-text">
+        <h1>Witaj na Bractwie Kontrolera 🎮, ${user}.</h1>
         <br>
         <span class="d-flex justify-content-center">
             <h2 class="mr-3 ml-3">${textContent}</h2>

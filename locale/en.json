@@ -41,7 +41,9 @@
     "useMethod": "Use method",
     "noSuchCommand": "There is no such command",
     "useHelpCommand": "Use `##0help [command name]` to get help",
-    "helpForCommand": "Help for command `##0`"
+    "helpForCommand": "Help for command `##0`",
+    "noCommandPermission": "⚠  You don't have permissions needed to use this command",
+    "errorContactAdmin": "If you belive, that's an error, please contact server administrator."
   },
   "welcomeStrings": [
     "Jesteśmy dumni, że możemy przyjąć Cię do naszych szeregów.",

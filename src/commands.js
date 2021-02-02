@@ -117,6 +117,35 @@ export default class Commands {
   }
 
   /**
+   * Check if message sender has given permissions
+   * @param {Array<String>} permissionTypes Type of permission
+   * @param {Boolean} warn Automatically send
+   * "no permission" respond to message channel
+   * @returns {Boolean} False if has not given
+   * perm, true if does have
+   */
+  requirePerms(permissionTypes, warn = false) {
+    let hasPermission = true;
+    permissionTypes.forEach((permissionType) => {
+      if (!this.message.author.hasPermission(permissionType)) {
+        hasPermission = false;
+      }
+    });
+
+    if (warn && !hasPermission) {
+      this.message.channel.send(
+        getBasicEmbed(
+          '⚠ Nie masz uprawnień do wykonania tej komendy!',
+          'Jeśli to błąd skontaktuj się z administratorem.'
+        ),
+        '#d60b26'
+      );
+    }
+
+    return hasPermission;
+  }
+
+  /**
    * Help command
    */
   help() {
@@ -206,6 +235,8 @@ export default class Commands {
   }
 
   setPrefix() {
+    if (!requirePerms(['ADMINISTRATOR'], true)) return;
+
     if (this.#args[0] && !this.#args[1]) {
       if (this.#args[0].length > 3) {
         this.#msg.channel.send(
@@ -230,7 +261,8 @@ export default class Commands {
   }
 
   setChannel() {
-    console.log(this.#args);
+    if (!requirePerms(['ADMINISTRATOR'], true)) return;
+
     if (this.#args[0] && this.#args[1] && !this.#args[2]) {
       if (
         this.#args[0] == 'welcome' ||
@@ -292,6 +324,8 @@ export default class Commands {
   }
 
   channelType() {
+    if (!requirePerms(['ADMINISTRATOR'], true)) return;
+
     let testchannel = (channelId) => {
       let foundChannel = false;
       for (const property in config.channelIds) {

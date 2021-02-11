@@ -4,7 +4,7 @@
   "description": "Discord Bot with customized functions for polish Discord 'Controller Brotherhood' server.",
   "main": "bot.js",
   "scripts": {
-    "start": "node --experimental-json-modules bot.js",
+    "start": "node --experimental-modules bot.js",
     "watch": "nodemon bot.js --config nodemon.json"
   },
   "repository": {
@@ -19,7 +19,7 @@
   "author": "dudematthew",
   "license": "ISC",
   "engines": {
-    "node": "8.7.0"
+    "node": "14.15.4"
   },
   "bugs": {
     "url": "https://github.com/dudematthew/big-brother-bot/issues"

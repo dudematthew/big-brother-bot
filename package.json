@@ -18,6 +18,9 @@
   ],
   "author": "dudematthew",
   "license": "ISC",
+  "engines": {
+    "node": "8.7.0"
+  },
   "bugs": {
     "url": "https://github.com/dudematthew/big-brother-bot/issues"
   },

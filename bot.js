@@ -34,7 +34,9 @@ client.on('ready', () => {
     console.log('Guild found: ' + guild.name);
     console.log(`| Using prefix: ${db.prefix}`);
     console.log(`| Using language: ${db.getLocaleString()}`);
-
+    console.log("| Setted up channels:");
+    console.log(`|   * welcome: ${db.welcomeChannelId ?? "not setted up"}`);
+    console.log(`|   * lfg: ${db.lfgChannelId ?? "not setted up"}`);
     // // Set channels by id's from config
     // channels = {
     // 	announcements: guild.channels.cache.get(db.announcementsChannelId),

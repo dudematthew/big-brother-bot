@@ -93,6 +93,10 @@ export default class DBModel {
     return this.#client.guilds.cache.get(this.#guildId);
   }
 
+  getAllSetChannels() {
+    return this.get('config/channels/') || {};
+  }
+
   /**
    * Get data from database based on current
    * Guild Id

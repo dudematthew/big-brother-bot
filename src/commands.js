@@ -77,6 +77,7 @@ export default class Commands {
         break;
       case 'channeltype':
         this.channelType();
+        break;
       default:
         this.#msg.channel.send(
           getBasicEmbed(
@@ -328,8 +329,10 @@ export default class Commands {
 
     let testchannel = (channelId) => {
       let foundChannel = false;
-      for (const property in config.channelIds) {
-        let currentChannelId = config.channelIds[property];
+      let settedChannels = this.#db.getAllSetChannels();
+
+      for (const property in settedChannels) {
+        let currentChannelId = settedChannels[property];
 
         if (currentChannelId == channelId) {
           foundChannel = property;
@@ -343,14 +346,16 @@ export default class Commands {
             '`'
         );
       } else {
-        this.#msg.channel.send('Ten kanał nie istnieje w mojej bazie...');
+        this.#msg.channel.send(
+          'Ten kanał nie posiada przyporządkowania do żadnego typu'
+        );
       }
     };
 
     if (this.#args[0] && !this.#args[1]) {
       if (this.#msg.guild.channels.cache.get(this.#args[0]) !== undefined) {
         testchannel(this.#args[0]);
-      } else this.#msg.channel.send('Eee... nie ma takiego kanału...');
+      } else this.#msg.channel.send('Taki kanał nie istnieje');
     } else if (!this.#args[0]) {
       testchannel(this.#msg.channel.id);
     } else {

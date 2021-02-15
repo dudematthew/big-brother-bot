@@ -5,7 +5,8 @@
   "main": "bot.js",
   "scripts": {
     "start": "node --experimental-modules bot.js",
-    "watch": "nodemon bot.js --config nodemon.json"
+    "watch": "nodemon bot.js --config nodemon.json",
+    "deploy": "git checkout master && git merge main && git push && git checkout -"
   },
   "repository": {
     "type": "git",

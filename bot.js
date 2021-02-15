@@ -14,7 +14,7 @@ import Behaviour from './src/behaviour.js';
 
 const isProduction = process.env.BOT_TOKEN == true;
 const client = new Discord.Client();
-const db = new DBModel('./database/database.json', true, false);
+const db = new DBModel(client, './database/database.json', true, false);
 const commands = new Commands(client, db);
 const behaviour = new Behaviour(client, db);
 
@@ -35,7 +35,7 @@ client.on('ready', () => {
     console.log(`| Using prefix: ${db.prefix}`);
     console.log(`| Using language: ${db.getLocaleString()}`);
     console.log("| Setted up channels:");
-    console.log(`|   * welcome: ${db.welcomeChannelId ?? "not setted up"}`);
+    console.log(`|   * welcome: ${db.getChannelById(db.welcomeChannelId) ?? "not setted up"}`);
     console.log(`|   * lfg: ${db.lfgChannelId ?? "not setted up"}`);
     // // Set channels by id's from config
     // channels = {

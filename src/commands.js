@@ -75,6 +75,8 @@ export default class Commands {
       case 'help':
         this.help();
         break;
+      case 'channeltype':
+        this.channelType();
       default:
         this.#msg.channel.send(
           getBasicEmbed(
@@ -104,8 +106,6 @@ export default class Commands {
     this.#isAdmin = message.member.hasPermission('ADMINISTRATOR')
       ? true
       : false;
-
-    console.log(this.#args);
   }
 
   /**

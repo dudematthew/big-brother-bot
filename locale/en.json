@@ -14,8 +14,8 @@
       "commandString": "setchannel",
       "aliases": ["sc"],
       "description": "Changes saved channel id's",
-      "additionalInfo": "Available channels to set: ",
-      "useMethod": "setchannel <channel name> <channel id>"
+      "additionalInfo": "Available channels to set: welcome",
+      "useMethod": "setchannel <channel name> [channel id]"
     },
     "channelType": {
       "id": "channeltype",

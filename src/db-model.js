@@ -16,16 +16,23 @@ export default class DBModel {
    * @type {JsonDB}
    */
   #db;
+  /**
+   * @type {Discord.Client}
+   */
+  #client;
 
   /**
+   * @param {Discord.Client} client
    * @param {string} dbName
    * @param {boolean} saveOnPush
    * @param {boolean} humanReadable
    */
-  constructor(dbName, saveOnPush, humanReadable) {
+  constructor(client, dbName, saveOnPush, humanReadable) {
     this.#db = new JsonDB(
       new JDBConfig(dbName, saveOnPush, humanReadable, '/')
     );
+
+    this.#client = client;
   }
 
   /**
@@ -76,6 +83,14 @@ export default class DBModel {
    */
   setCurrentGuildId(guildId) {
     this.#guildId = guildId;
+  }
+
+  /**
+   * Returns guild by currently set id
+   * @returns {Discord.Guild}
+   */
+  getCurrentGuild() {
+    return this.#client.guilds.cache.get(this.#guildId);
   }
 
   /**
@@ -138,6 +153,16 @@ export default class DBModel {
       this.locale = config.baseLocale;
       return config.baseLocale;
     }
+  }
+
+  /**
+   * Returns channel from current guild by its
+   * id
+   * @param {String} channelName
+   * @returns {Discord.Channel}
+   */
+  getChannelById(channelId) {
+    return this.getCurrentGuild().channels.cache.get(channelId);
   }
 
   getLocaleString() {
